@@ -21,9 +21,27 @@ class Social_Links_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 		// outputs the content of the widget
-		?>
-		<p>Testing Widget</p>
-	<?php }
+		$links = [
+			'facebook' => esc_attr( $instance['facebook_link'] ),
+			'twitter' => esc_attr( $instance['twitter_link'] ),
+			'linkedin' => esc_attr( $instance['linkedin_link'] ),
+			'google' => esc_attr( $instance['google_link'] )
+		];
+		$icons = [
+			'facebook' => esc_attr( $instance['facebook_icon'] ),
+			'twitter' => esc_attr( $instance['twitter_icon'] ),
+			'linkedin' => esc_attr( $instance['linkedin_icon'] ),
+			'google' => esc_attr( $instance['google_icon'] ),
+		];
+		$icon_width = $instance['icon_width'];
+
+		echo $args['before_widget'];
+
+		// Call frontend function
+		$this->getSocialLinks( $links, $icons, $icon_width );
+
+		echo $args['after_widget'];
+	}
 
 	/**
 	 * Outputs the options form on admin
@@ -53,7 +71,7 @@ class Social_Links_Widget extends WP_Widget {
 			'facebook_icon' => (!empty($new_instance['facebook_icon'])) ? strip_tags($new_instance['facebook_icon']) : '',
 			'twitter_icon' => (!empty($new_instance['twitter_icon'])) ? strip_tags($new_instance['twitter_icon']) : '',
 			'linkedin_icon' => (!empty($new_instance['linkedin_icon'])) ? strip_tags($new_instance['linkedin_icon']) : '',
-			'google_icon' => (!empty($new_instance['google_icons'])) ? strip_tags($new_instance['google_icon']) : '',
+			'google_icon' => (!empty($new_instance['google_icon'])) ? strip_tags($new_instance['google_icon']) : '',
 			'icon_width' => (!empty($new_instance['icon_width'])) ? strip_tags($new_instance['icon_width']) : ''
 		];
 
@@ -179,4 +197,24 @@ class Social_Links_Widget extends WP_Widget {
 		</p>
 
 	<?php }
+
+	/**
+	 * Gets and Display Icons on Frontend
+	 *
+	 * @param array $links Social Links
+	 * @param array $icons Social Icons
+	 * @param array $icon_width Icons's Width
+	 */
+	public function getSocialLinks( $links, $icons, $icon_width ) {
+		?>
+
+		<div class="uzabila-social-links">
+			<a href="<?php echo esc_attr( $links['facebook'] ); ?>" target="_blank"><img src="<?php echo esc_attr( $icons['facebook'] ); ?>" width="<?php echo esc_attr( $icon_width ); ?>" alt="Facebook Link"></a>
+			<a href="<?php echo esc_attr( $links['twitter'] ); ?>" target="_blank"><img src="<?php echo esc_attr( $icons['twitter'] ); ?>" width="<?php echo esc_attr( $icon_width ); ?>" alt="Twitter Link"></a>
+			<a href="<?php echo esc_attr( $links['linkedin'] ); ?>" target="_blank"><img src="<?php echo esc_attr( $icons['linkedin'] ); ?>" width="<?php echo esc_attr( $icon_width ); ?>" alt="LinkedIn Link"></a>
+			<a href="<?php echo esc_attr( $links['google'] ); ?>" target="_blank"><img src="<?php echo esc_attr( $icons['google'] ); ?>" width="<?php echo esc_attr( $icon_width ); ?>" alt="Google plus Link"></a>
+		</div>
+
+		<?php
+	}
 }
